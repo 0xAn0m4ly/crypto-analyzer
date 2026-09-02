@@ -43,3 +43,24 @@ def input_quote_currency():
             break
         else:
             return quote_currency
+
+def get_data():
+    crypto_list = input_crypto()
+    quote_currency = input_quote_currency()
+    print('Getting data...\n')
+    for crypto in crypto_list:
+        url = 'https://api.coingecko.com/api/v3/simple/price'
+        params = {
+            'ids': crypto,
+            'vs_currencies': quote_currency
+        }
+        headers = {
+            'x-cg-demo-api-key': api_key
+        }
+        request = requests.get(url, params=params, headers=headers)
+        data = request.json()
+        for crypto_id in data.values():
+            for value in crypto_id.values():
+                print(f'- 1 {crypto} now is {value} {quote_currency}')
+
+get_data()
