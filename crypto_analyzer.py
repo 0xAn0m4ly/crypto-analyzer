@@ -23,13 +23,31 @@ def input_crypto():
                 'when you have done type "ok" to continue or "q" to quit the '
                     'program.\n'
             )
-        if crypto == 'ok':
-            return crypto_list
-        elif crypto == 'q':
-            print('Bye!')
-            break
-        else:        
-            crypto_list.append(crypto)
+        url = f'https://api.coingecko.com/api/v3/coins/{crypto}'
+
+        params = {
+            'tickers': 'false',
+            'market_data': 'false',
+            'community_data': 'false',
+            'developer-data': 'false',
+            'sparkline': 'false'
+        }
+
+        headers = {
+            'x-cg-demo-api-key': api_key
+        }
+
+        response = requests.get(url, params=params, headers=headers)
+        if response.status_code == 200:
+            if crypto == 'ok':
+                return crypto_list
+            elif crypto == 'q':
+                print('Bye!')
+                break
+            else:        
+                crypto_list.append(crypto)
+        elif response.status_code == 404:
+            print('The crypto id that you provided is not available, if it exists please remember to use lowercase letters.')
 
 # Lo stesso controllo vael anche per le valute di scambio
 
