@@ -1,17 +1,23 @@
-# Da rimuovere per la versione 1.0
-import os 
-from dotenv import load_dotenv
+"""
+Scrip Name: crypto-analyzer
+Description: This Python script is a precise and reliable 
+way to get in your cmd line the actual value of crypto. 
+The script is based on the free coingecko API to get updated data.
 
-load_dotenv()
-api_key = os.getenv('API_KEY')
-######################################
+Author: 0xAn0m4ly
+Date: 06/09/2026
+Version: 1.0
+"""
 
 import requests 
 import sys
 
-print('Welcome...')
-
 crypto_list = []
+
+# Here provide your coingecko API key
+api_key = 'your_coingecko_API_key_here'
+
+print('Welcome...')
 
 def input_crypto():
     while True:
