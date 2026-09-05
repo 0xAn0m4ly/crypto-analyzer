@@ -9,18 +9,14 @@ api_key = os.getenv('API_KEY')
 import requests 
 
 print('Welcome\n')
-      
-# Bisogna trovare un modo di accertare che la crypto inserita sia esistente
-# magari tramite una richiesta get e poi mettere una lista e dire se sta qui fai
-# i blocchi if seguenti
 
 crypto_list = []
 
 def input_crypto():
     while True:
         crypto = input(
-            'Which crypto do you want to trace? (ex. bitcoin, ethereum...),' \
-                'when you have done type "ok" to continue or "q" to quit the '
+            'Which crypto do you want to trace? (ex. bitcoin, ethereum...).' \
+                'When you have done type "ok" to continue or "q" to quit the '
                     'program.\n'
             )
         url = f'https://api.coingecko.com/api/v3/coins/{crypto}'
@@ -49,18 +45,27 @@ def input_crypto():
         elif response.status_code == 404:
             print('The crypto id that you provided is not available, if it exists please remember to use lowercase letters.')
 
-# Lo stesso controllo vael anche per le valute di scambio
-
 def input_quote_currency():
     while True:
         quote_currency = input(
             'Now please type the quote currency (ex. usd, eur...) or type "q" to ' \
                 'quit the program.\n')
-        if quote_currency == 'q':
-            print('Bye!')
-            break
-        else:
-            return quote_currency
+        
+        url = 'https://api.coingecko.com/api/v3/simple/supported_vs_currencies'
+
+        headers = {
+            'x-cg-demo-api-key': api_key
+        }
+
+        response = requests.get(url, headers=headers).json()
+        if quote_currency in response:
+            if quote_currency == 'q':
+                print('Bye!')
+                break
+            else:
+                return quote_currency
+        elif quote_currency not in response:
+            print('The quote currency that you provided is not available, if it exists please remember to use lowercase letters.')
 
 def get_data():
     crypto_list = input_crypto()
